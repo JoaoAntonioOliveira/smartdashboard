@@ -2,6 +2,7 @@ package org.example.smartdashboard.service;
 
 import org.example.smartdashboard.model.Ticket;
 import org.example.smartdashboard.repository.TicketRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,11 +27,13 @@ public class TicketService {
         return repository.findById(id);
     }
 
-    public List<Ticket> findAllByDataAberturaBetween(LocalDate date) {
+    public List<Ticket> findAllByDataAberturaBetween(LocalDate date, String orderByTerm) {
         LocalDate dateInicio = LocalDate.of(date.getYear(), date.getMonth(), 1);
         LocalDate dateFim = dateInicio.withDayOfMonth(dateInicio.lengthOfMonth());
 
-        return repository.findAllByDataAberturaBetween(dateInicio, dateFim);
+        Sort sort = Sort.by(Sort.Direction.ASC, orderByTerm);
+
+        return repository.findAllByDataAberturaBetween(dateInicio, dateFim, sort);
     }
 
     public Ticket salvar(Ticket ticket) {

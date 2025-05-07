@@ -43,8 +43,8 @@ public class TicketController {
     }
 
     @GetMapping("/buscarByDate")
-    public List<Ticket> findAllByDataAberturaBetween(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM") Calendar date) {
-        return service.findAllByDataAberturaBetween(LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+    public List<Ticket> findAllByDataAberturaBetween(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM") Calendar date, @RequestParam String orderByTerm) {
+        return service.findAllByDataAberturaBetween(LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault()), orderByTerm);
     }
 
     @PostMapping
