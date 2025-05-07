@@ -1,10 +1,9 @@
 package org.example.smartdashboard.controller;
 
 
-import org.example.smartdashboard.model.Cliente;
 import org.example.smartdashboard.model.Ticket;
-import org.example.smartdashboard.service.ClienteService;
 import org.example.smartdashboard.service.TicketService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
 
@@ -40,11 +42,15 @@ public class TicketController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/buscarByDate")
+    public List<Ticket> findAllByDataAberturaBetween(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM") Calendar date) {
+        return service.findAllByDataAberturaBetween(LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+    }
+
     @PostMapping
     public Ticket criar(@RequestBody Ticket Ticket) {
-        // Define a data de criação como a data atual, caso não tenha sido informada
         if (Ticket.getDataAbertura() == null) {
-            Ticket.setDataAbertura(Calendar.getInstance());
+            Ticket.setDataAbertura(LocalDate.now());
         }
         return service.salvar(Ticket);
     }
@@ -57,7 +63,6 @@ public class TicketController {
                     ticketExistente.setCliente(ticketAtualizada.getCliente());
                     ticketExistente.setModulo(ticketAtualizada.getModulo());
                     ticketExistente.setDataEncerramento(ticketAtualizada.getDataEncerramento());
-                    // Não altera dataCriacao
                     return ResponseEntity.ok(service.salvar(ticketExistente));
                 })
                 .orElse(ResponseEntity.notFound().build());

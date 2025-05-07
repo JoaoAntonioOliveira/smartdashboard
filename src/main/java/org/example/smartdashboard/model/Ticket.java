@@ -1,7 +1,9 @@
 package org.example.smartdashboard.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Locale;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,16 +43,16 @@ public class Ticket implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "data_abertura")
-    private Calendar dataAbertura;
+    private LocalDate dataAbertura;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "data_encerramento")
-    private Calendar dataEncerramento;
+    private LocalDate dataEncerramento;
 
     public Ticket() {
     }
 
-    public Ticket(Long id, String titulo, Cliente cliente, Modulo modulo, Calendar dataAbertura, Calendar dataEncerramento) {
+    public Ticket(Long id, String titulo, Cliente cliente, Modulo modulo, LocalDate dataAbertura, LocalDate dataEncerramento) {
         this.id = id;
         this.titulo = titulo;
         this.cliente = cliente;
@@ -91,19 +93,19 @@ public class Ticket implements Serializable {
         this.modulo = modulo;
     }
 
-    public Calendar getDataAbertura() {
+    public LocalDate getDataAbertura() {
         return dataAbertura;
     }
 
-    public void setDataAbertura(Calendar dataAbertura) {
+    public void setDataAbertura(LocalDate dataAbertura) {
         this.dataAbertura = dataAbertura;
     }
 
-    public Calendar getDataEncerramento() {
+    public LocalDate getDataEncerramento() {
         return dataEncerramento;
     }
 
-    public void setDataEncerramento(Calendar dataEncerramento) {
+    public void setDataEncerramento(LocalDate dataEncerramento) {
         this.dataEncerramento = dataEncerramento;
     }
 
